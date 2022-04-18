@@ -50,26 +50,27 @@ def process_cell(cell):
     result = ''
 
     if 'source' in cell:
-        result += filter_data("".join(cell['source']))
+        s = "".join(cell['source'])
+        if 'cell_type' in cell and cell['cell_type'] == 'markdown':
+            s = markdown_to_html(s)
+        result += s
     
     # case 1: code cell
     if 'outputs' in cell:
         for o in cell['outputs']:
             if 'text' in o:
-                result += filter_data("".join(o['text']))
+                result += "".join(o['text'])
             if 'data' in o:
-                for k,v in o['data'].items():
-                    if k in ('text/html', 'text/plain'):
-                        result += filter_data("".join(v))
-
+                if 'text/html' in o['data']:
+                    result += "".join(o['data']['text/html'])
+                if 'text/plain' in o['data']:
+                    result += f"<pre>{''.join(o['data']['text/plain'])}</pre>"
+                
     return result
 
-# takes input of string; filters html and other data 
-def filter_data(data):
-    # if len(data) > 5000:
-    filtered = re.sub('<[^>]*>', '', data)
-    return filtered # this string will have markup with it 
-    # TODO: remove markup from data
+# TODO: convert markdown to html 
+def markdown_to_html(data):
+    return data 
 
 def load_imagej_tutorials(root):
     """
@@ -99,7 +100,7 @@ def load_imagej_tutorials(root):
             doc = parse_notebook(nbfile)
             if doc:
                 nbpath = str(nbfile)[len(str(root)) + 1:]
-                doc['url'] = f'https://github.com/imagej/tutorials/blob/master/{nbpath}' 
+                doc['id'] = f'https://github.com/imagej/tutorials/blob/master/{nbpath}' 
                 documents.append(doc)
         except:
             logger.error(f'Failed to parse {Path}:')
@@ -112,7 +113,7 @@ def main(args):
     docs = load_imagej_tutorials(args[0])
     for doc in docs: 
         # pprint(doc)
-        print(doc['url'])
+        print(doc['id'])
 
 if __name__ == '__main__':
     main(['/Users/jackrueth/code/imagej/tutorials'])
