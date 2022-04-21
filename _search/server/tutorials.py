@@ -5,9 +5,11 @@
 
 import logging, traceback, re, sys
 import json
+import markdown2
 from parseutil import first_sentence
 from pathlib import Path
 from pprint import pprint
+
 
 logger = logging.getLogger(__name__)
 
@@ -51,8 +53,9 @@ def process_cell(cell):
 
     if 'source' in cell:
         s = "".join(cell['source'])
+        # markdown to html converter
         if 'cell_type' in cell and cell['cell_type'] == 'markdown':
-            s = markdown_to_html(s)
+            s = markdown2.markdown(s)
         result += s
     
     # case 1: code cell
@@ -67,10 +70,6 @@ def process_cell(cell):
                     result += f"<pre>{''.join(o['data']['text/plain'])}</pre>"
                 
     return result
-
-# TODO: convert markdown to html 
-def markdown_to_html(data):
-    return data 
 
 def load_imagej_tutorials(root):
     """
