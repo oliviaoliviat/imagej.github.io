@@ -4,12 +4,12 @@ import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
-    apiKey: "hz046FoyrmnivD6aCNxGOQA5OZ8dNI70", // Be sure to use the search-only-api-key
+    apiKey:  "KfjkBJl6Yilg8sK0vngKBv6g7csQgVPH" , // Be sure to use the search-only-api-key
     nodes: [
       {
-        host: "search.imagej.net",
+        host: "144.92.48.217",
         port: "8108",
-        protocol: "https"
+        protocol: "http"
       }
     ]
   },

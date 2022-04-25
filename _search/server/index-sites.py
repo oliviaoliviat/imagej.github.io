@@ -51,8 +51,9 @@ def main(args):
     if len(args) == 1:
         collection = 'imagej-wiki'
         sites = {
-            'imagej.net': os.path.join(os.path.dirname(args[0]), '..', '..'),
-            'imagej.nih.gov/ij': '/var/www/mirror.imagej.net',
+            # 'imagej.net': os.path.join(os.path.dirname(args[0]), '..', '..'),
+            # 'imagej.nih.gov/ij': '/var/www/mirror.imagej.net',
+            'imagej-tutorials' : "/Users/jackrueth/code/imagej/tutorials/"
         }
     elif len(args) >= 3:
         collection = args[1]

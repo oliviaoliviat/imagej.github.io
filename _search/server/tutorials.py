@@ -15,20 +15,25 @@ logger = logging.getLogger(__name__)
 
 
 def is_imagej_tutorials(root):
-    java = Path(root) / 'java'
+    # java = Path(root) / 'java'
     notebooks = Path(root) / 'notebooks'
-    return java.isdir() and notebooks.isdir()
+    return notebooks.is_dir()
+    # return java.is_dir() and notebooks.is_dir()
 
 
 def parse_java_source(path):
     logger.debug(f'Parsing Java source file {path}...')
 
     with open(path) as f:
-        lines = json.load(f)
+        lines = f.read()
 
     # This is dumb -- do we want to do better?
     doc = {}
     doc['content'] = ''.join(lines)
+    doc['title'] = str(path)
+    doc['icon'] = '/media/icons/imagej.png'
+    doc['score'] = 90
+    doc['description'] = ''
 
     return doc
 
@@ -41,6 +46,10 @@ def parse_notebook(path):
 
     doc = {}
     doc['content'] = ''
+    doc['title'] = str(path)
+    doc['icon'] = '/media/icons/imagej.png'
+    doc['score'] = 90
+    doc['description'] = ''
     for cell in data['cells']:
         # TODO: implement process_cell: extract source and output(s) if present
         doc['content'] += process_cell(cell)
@@ -88,6 +97,8 @@ def load_imagej_tutorials(root):
         try:
             doc = parse_java_source(javafile)
             if doc:
+                nbpath = str(javafile)[len(str(root)) + 1:]
+                doc['id'] = f'https://github.com/imagej/tutorials/blob/master/{nbpath}' 
                 documents.append(doc)
         except:
             logger.error(f'Failed to parse {Path}:')
@@ -108,11 +119,11 @@ def load_imagej_tutorials(root):
 
     return documents
 
-def main(args):
+""" def main(args):
     docs = load_imagej_tutorials(args[0])
     for doc in docs: 
         # pprint(doc)
         print(doc['id'])
 
 if __name__ == '__main__':
-    main(['/Users/jackrueth/code/imagej/tutorials'])
+    main(['/Users/jackrueth/code/imagej/tutorials']) """
