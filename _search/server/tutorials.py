@@ -30,7 +30,8 @@ def parse_java_source(path):
     # This is dumb -- do we want to do better?
     doc = {}
     doc['content'] = ''.join(lines)
-    doc['title'] = str(path)
+    title = str(path)
+    doc['title'] = title[title.find("tutorials/")+len("tutorials/"):]
     doc['icon'] = '/media/icons/imagej.png'
     doc['score'] = 90
     doc['description'] = ''
@@ -46,12 +47,12 @@ def parse_notebook(path):
 
     doc = {}
     doc['content'] = ''
-    doc['title'] = str(path)
+    title = str(path)
+    doc['title'] = title[title.find("tutorials/")+len("tutorials/"):]
     doc['icon'] = '/media/icons/imagej.png'
     doc['score'] = 90
     doc['description'] = ''
     for cell in data['cells']:
-        # TODO: implement process_cell: extract source and output(s) if present
         doc['content'] += process_cell(cell)
 
     return doc
@@ -97,7 +98,7 @@ def load_imagej_tutorials(root):
         try:
             doc = parse_java_source(javafile)
             if doc:
-                nbpath = str(javafile)[len(str(root)) + 1:]
+                nbpath = str(javafile)[len(str(root)):]
                 doc['id'] = f'https://github.com/imagej/tutorials/blob/master/{nbpath}' 
                 documents.append(doc)
         except:
@@ -109,7 +110,7 @@ def load_imagej_tutorials(root):
         try:
             doc = parse_notebook(nbfile)
             if doc:
-                nbpath = str(nbfile)[len(str(root)) + 1:]
+                nbpath = str(nbfile)[len(str(root)):]
                 doc['id'] = f'https://github.com/imagej/tutorials/blob/master/{nbpath}' 
                 documents.append(doc)
         except:
