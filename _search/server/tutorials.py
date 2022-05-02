@@ -32,7 +32,7 @@ def parse_java_source(path):
     doc['content'] = ''.join(lines)
     title = str(path)
     doc['title'] = title[title.find("tutorials/")+len("tutorials/"):]
-    doc['icon'] = 'Java_logo.png'
+    doc['icon'] = '../../media/java.png'
     doc['score'] = 90
     doc['description'] = ''
 
@@ -49,7 +49,7 @@ def parse_notebook(path):
     doc['content'] = ''
     title = str(path)
     doc['title'] = title[title.find("tutorials/")+len("tutorials/"):]
-    doc['icon'] = 'Jupyter_logo.png'
+    doc['icon'] = '../../media/jupyter.png'
     doc['score'] = 90
     doc['description'] = ''
     for cell in data['cells']:
@@ -120,6 +120,7 @@ def load_imagej_tutorials(root):
 
     return documents
 
+# used for testing
 """ def main(args):
     docs = load_imagej_tutorials(args[0])
     for doc in docs: 

@@ -4,7 +4,7 @@ import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
-    apiKey:  "Sjkob6WIxE5vfpVK3Dp4FYPYFjRdWfBl" , // Be sure to use the search-only-api-key
+    apiKey:  "F3vRyCOqztwtTQqk2MK3WiUHuveNczoa" , // Be sure to use the search-only-api-key
     nodes: [
       {
         host: "144.92.48.217",
@@ -24,15 +24,35 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
 
+/* search.addWidget(
+  instantsearch.widgets.sortBySelector({
+    container: '#search-panel',
+    indicies: [
+      {name: 'imagej-wiki', label: 'imagej-wiki'},
+      {name: 'imagej-tutorials', label: 'imagej-tutorials'},
+      {name: 'imagej-website', label: 'imagej-websites'}
+    ]
+  })
+) */
+
 const search = instantsearch({
   searchClient,
-  indexName: "imagej-wiki"
+  indexName: "imagej-tutorials"
 });
 
 search.addWidgets([
   instantsearch.widgets.searchBox({
     container: '#search-box',
   }),
+  // this is an attempt to add a dropdown selector to choose between collection options
+  /* instantsearch.widgets.sortBySelector({
+    container: '#search-dropdown', // I created search-dropdown in the html to try to add a place for the dropdown
+    indicies: [
+      {name: 'imagej-wiki', label: 'imagej-wiki'},
+      {name: 'imagej-tutorials', label: 'imagej-tutorials'},
+      {name: 'imagej-website', label: 'imagej-websites'}
+    ]
+  }), */
   instantsearch.widgets.hits({
     container: '#search-hits',
     templates: {
