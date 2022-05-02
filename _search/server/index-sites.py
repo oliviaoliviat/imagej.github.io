@@ -1,35 +1,12 @@
 #!/bin/env python
 
 import logging, os, sys
+from pathlib import Path
 import jekyll, ijsite, tsutil
 import tutorials
 
 
 logger = logging.getLogger('indexer')
-
-
-def load_site(siteroot):
-    if jekyll.is_jekyll_site(siteroot):
-        return jekyll.load_jekyll_site(siteroot)
-    if ijsite.is_imagej_website(siteroot):
-        return ijsite.load_site(siteroot)
-    if tutorials.is_imagej_tutorials(siteroot):
-        return tutorials.load_imagej_tutorials(siteroot)
-    return None
-
-
-def load_sites(sites):
-    logger.info('Loading documents...')
-    documents = []
-    for siteid, siteroot in sites.items():
-        docs = load_site(siteroot)
-        if docs:
-            for doc in docs:
-                doc['siteid'] = siteid
-            documents.extend(docs)
-    logger.info(f'{len(documents)} documents loaded.')
-    return documents
-
 
 def index_documents(collection, documents):
     client = tsutil.connect()
@@ -48,23 +25,27 @@ def main(args):
     logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
     logging.root.setLevel(logging.INFO)
 
-    if len(args) == 1:
-        collection = 'imagej-wiki'
-        sites = {
-            # 'imagej.net': os.path.join(os.path.dirname(args[0]), '..', '..'),
-            # 'imagej.nih.gov/ij': '/var/www/mirror.imagej.net',
-            'imagej-tutorials' : "/Users/jackrueth/code/imagej/tutorials/"
-        }
-    elif len(args) >= 3:
-        collection = args[1]
-        siteroot = args[2]
-    else:
-        print('Usage: index-sites.py [<collection-name> <site-id:site-root> [<another-site-id:another-site-root>...]]')
-        sys.exit(1)
 
-    documents = load_sites(sites)
-    index_documents(collection, documents)
+    p = Path(sys.argv[0]).parent
+    root_imagej_wiki = p / '..' / '..'
+    root_imagej_tutorials = p / 'sites' / 'tutorials' #TODO: shell script to clone git repo if missing
+    root_imagej_website = '/var/www/mirror.imagej.net'
+    sites = [
+        ('imagej-wiki', root_imagej_wiki, jekyll.is_jekyll_site, jekyll.load_jekyll_site),
+        ('imagej-website', root_imagej_website, ijsite.is_imagej_website, ijsite.load_site), 
+        ('imagej-tutorials', root_imagej_tutorials, tutorials.is_imagej_tutorials, tutorials.load_imagej_tutorials)
+    ]
 
+    for collection, root, isvalid, loadsite in sites:
+        if isvalid(root):
+            documents = loadsite(root)
+            index_documents(collection, documents)
+        else:
+            logger.warning(f"Skipping invalid site {root}")
+    
+
+    # wiki, tutorials, source code(source + javadoc to actions), 
+    # imagej-website, support channels(mailing lists + forums + chat rooms + issues), and maven artifacts
 
 if __name__ == '__main__':
     main(sys.argv)

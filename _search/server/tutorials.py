@@ -32,7 +32,7 @@ def parse_java_source(path):
     doc['content'] = ''.join(lines)
     title = str(path)
     doc['title'] = title[title.find("tutorials/")+len("tutorials/"):]
-    doc['icon'] = '/media/icons/imagej.png'
+    doc['icon'] = 'Java_logo.png'
     doc['score'] = 90
     doc['description'] = ''
 
@@ -49,7 +49,7 @@ def parse_notebook(path):
     doc['content'] = ''
     title = str(path)
     doc['title'] = title[title.find("tutorials/")+len("tutorials/"):]
-    doc['icon'] = '/media/icons/imagej.png'
+    doc['icon'] = 'Jupyter_logo.png'
     doc['score'] = 90
     doc['description'] = ''
     for cell in data['cells']:

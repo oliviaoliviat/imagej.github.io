@@ -4,7 +4,7 @@ import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
-    apiKey:  "KfjkBJl6Yilg8sK0vngKBv6g7csQgVPH" , // Be sure to use the search-only-api-key
+    apiKey:  "Sjkob6WIxE5vfpVK3Dp4FYPYFjRdWfBl" , // Be sure to use the search-only-api-key
     nodes: [
       {
         host: "144.92.48.217",
