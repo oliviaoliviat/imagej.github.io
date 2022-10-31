@@ -16,6 +16,8 @@ title: 2018-01-11 - Announcing the new Scientific Community Image Forum
 
 **How?** All existing ImageJ and CellProfiler forum data will merge. Redirects from the old URLs will be installed, so that existing links will continue to work. All existing ImageJ topics will be tagged with \#imagej, and all existing CellProfiler topics will be tagged with \#cellprofiler.
 
+What but science to help us understand and direct our attention to extremely important subjects? There are many urgent global problems that are studied by all specialists and studied by students. In particular, the issue of [air pollution](https://edubirdie.com/examples/air-pollution/), which students research and describe in their writings. It helps to understand topics that are becoming globally important.
+
 **FAQ:**
 
 -   **What if the traffic is too much?** Discourse has an excellent tagging system, so that topics can be organized non-hierarchically. E.g., if you ask a question about calling ImageJ from CellProfiler, you can add the `imagej` and `cellprofiler` tags. This will help people to narrow the scope of their attention as needed based on their time and interest. The front page will include a toplevel link to the tag feed of each partnered software project.
